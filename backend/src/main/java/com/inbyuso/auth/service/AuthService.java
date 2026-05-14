@@ -9,7 +9,6 @@ import com.inbyuso.auth.exception.AuthException;
 import com.inbyuso.auth.repository.RefreshTokenRepository;
 import com.inbyuso.auth.repository.UserRepository;
 import com.inbyuso.auth.util.JwtUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -145,13 +144,7 @@ public class AuthService {
     }
 
     private void setRefreshTokenCookie(HttpServletResponse response, String token) {
-        Cookie cookie = new Cookie("refresh_token", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setPath("/api/auth/refresh");
-        cookie.setMaxAge((int) (refreshTokenExpiryMs / 1000));
-        // SameSite=Strict via header (Cookie API doesn't support SameSite directly in all versions)
-        response.addCookie(cookie);
+        // addCookie는 SameSite 미지원이므로 수동 헤더만 사용
         response.addHeader("Set-Cookie",
                 String.format("refresh_token=%s; Path=/api/auth/refresh; HttpOnly; Secure; SameSite=Strict; Max-Age=%d",
                         token, refreshTokenExpiryMs / 1000));

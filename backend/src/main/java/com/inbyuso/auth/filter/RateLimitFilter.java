@@ -65,10 +65,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
     }
 
     private String extractIp(HttpServletRequest request) {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
-        }
+        // Railway/클라우드 환경에서 실제 클라이언트 IP는 RemoteAddr로 신뢰
+        // X-Forwarded-For는 스푸핑 가능하므로 사용하지 않음
         return request.getRemoteAddr();
     }
 }

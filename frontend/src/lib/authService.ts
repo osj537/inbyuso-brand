@@ -6,7 +6,8 @@ export const authService = {
     const res = await apiClient.post<ApiResponse<AuthResponse>>('/auth/signup', data)
     const auth = res.data.data!
     setAccessToken(auth.accessToken)
-    localStorage.setItem('user', JSON.stringify(auth.user))
+    // 민감하지 않은 식별자만 sessionStorage에 저장 (탭 닫으면 자동 삭제)
+    sessionStorage.setItem('loggedIn', '1')
     return auth
   },
 
@@ -14,7 +15,7 @@ export const authService = {
     const res = await apiClient.post<ApiResponse<AuthResponse>>('/auth/login', data)
     const auth = res.data.data!
     setAccessToken(auth.accessToken)
-    localStorage.setItem('user', JSON.stringify(auth.user))
+    sessionStorage.setItem('loggedIn', '1')
     return auth
   },
 
@@ -25,12 +26,12 @@ export const authService = {
       // API 실패해도 로컬 상태는 반드시 초기화
     } finally {
       setAccessToken(null)
-      localStorage.removeItem('user')
+      sessionStorage.removeItem('loggedIn')
     }
   },
 
   isLoggedIn(): boolean {
     if (typeof window === 'undefined') return false
-    return !!localStorage.getItem('user')
+    return sessionStorage.getItem('loggedIn') === '1'
   },
 }
