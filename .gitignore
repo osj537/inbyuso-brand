@@ -1,0 +1,21 @@
+# 환경변수 - 절대 커밋 금지
+.env
+.env.local
+.env.production
+.env*.local
+backend/.env
+
+# 빌드 산출물
+backend/target/
+frontend/.next/
+frontend/out/
+frontend/node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,79 @@
+@reference "../../app/globals.css";
+
+.header {
+  @apply w-full sticky top-0 z-50 bg-black;
+}
+
+/* 메인 네비게이션 */
+.mainNav {
+  @apply max-w-[1200px] mx-auto px-4 h-14 flex items-center justify-between;
+}
+
+.logo {
+  @apply text-white font-bold text-xl tracking-widest;
+}
+
+.navList {
+  @apply flex items-center gap-6;
+}
+
+.navItem {
+  @apply text-sm font-medium transition-colors text-gray-400 hover:text-white;
+}
+
+.navItemActive {
+  @apply text-white;
+}
+
+.rightMenu {
+  @apply flex items-center gap-5 text-gray-400 text-sm;
+}
+
+.rightMenuItem {
+  @apply hover:text-white;
+}
+
+/* 서브 네비게이션 */
+.subNavWrapper {
+  @apply border-t border-gray-800;
+}
+
+.subNav {
+  @apply max-w-[1200px] mx-auto px-4 h-10 flex items-center gap-6 overflow-x-auto;
+}
+
+.subNavItem {
+  @apply text-xs whitespace-nowrap font-medium transition-colors text-gray-400 hover:text-white;
+}
+
+.subNavItemActive {
+  @apply text-red-500;
+}
+
+/* 검색바 */
+.searchBarWrapper {
+  @apply bg-black;
+}
+
+.searchBarInner {
+  @apply max-w-[1200px] mx-auto px-4 py-6;
+}
+
+.searchInputWrapper {
+  @apply relative;
+}
+
+.searchInput {
+  @apply w-full h-10 px-4 pr-10 bg-white border border-gray-700 rounded text-sm text-white outline-none focus:border-gray-500;
+  &::placeholder {
+    color: #c3c3c3;
+  }
+}
+
+.searchButton {
+  @apply absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white;
+}
+
+.searchIcon {
+  @apply w-4 h-4;
+}

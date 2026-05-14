@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: ${SUPABASE_DB_URL}
+    username: ${SUPABASE_DB_USER}
+    password: ${SUPABASE_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
+      max-lifetime: 60000
+      keepalive-time: 30000
+      connection-test-query: SELECT 1
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-expiry-ms: 900000       # 15분
+  refresh-token-expiry-ms: 604800000   # 7일
+
+rate-limit:
+  auth:
+    capacity: 5
+    refill-tokens: 5
+    refill-duration-minutes: 1
+
+logging:
+  level:
+    root: INFO
+    com.inbyuso: DEBUG
