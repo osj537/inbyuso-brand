@@ -2,18 +2,12 @@
 
 import { useState } from 'react'
 
-interface ProductCardProps {
-  brand: string
-  name: string
-  price: number
-  salePrice?: number
-  rating?: number
-}
+import { Product } from '@/types/product'
 
-export default function ProductCard({ brand, name, price, salePrice, rating = 4.8 }: ProductCardProps) {
+type ProductCardProps = Pick<Product, 'brand' | 'name' | 'price' | 'salePrice' | 'rating' | 'imageUrl' | 'discountRate'>
+
+export default function ProductCard({ brand, name, price, salePrice, rating = 4.8, discountRate }: ProductCardProps) {
   const [wished, setWished] = useState(false)
-
-  const discountRate = salePrice ? Math.round((1 - salePrice / price) * 100) : null
 
   return (
     <div className="group cursor-pointer">

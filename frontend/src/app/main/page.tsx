@@ -12,9 +12,9 @@ export default function MainPage() {
       <main>
         <HeroBanner />
         <div className="divide-y divide-gray-100">
-          <ProductSection title="실시간 랭킹" />
-          <ProductSection title="이번 주 신규입점" />
-          <ProductSection title="이런 제품 어때요" />
+          <ProductSection title="실시간 랭킹" section="RANKING" />
+          <ProductSection title="이번 주 신규입점" section="NEW" />
+          <ProductSection title="이런 제품 어때요" section="RECOMMEND" />
         </div>
         <ReviewSection />
         <BrandCTA />
