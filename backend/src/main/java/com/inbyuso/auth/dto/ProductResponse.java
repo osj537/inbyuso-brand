@@ -13,7 +13,8 @@ public record ProductResponse(
         BigDecimal rating,
         String imageUrl,
         String category,
-        Integer discountRate
+        Integer discountRate,
+        int purchaseCount
 ) {
     public static ProductResponse from(Product product) {
         Integer discountRate = null;
@@ -31,7 +32,8 @@ public record ProductResponse(
                 product.getRating(),
                 product.getImageUrl(),
                 product.getCategory(),
-                discountRate
+                discountRate,
+                product.getPurchaseCount()
         );
     }
 }

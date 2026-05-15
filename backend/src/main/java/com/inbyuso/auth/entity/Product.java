@@ -43,9 +43,8 @@ public class Product {
     @Column(length = 50)
     private String category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private Section section;
+    @Column(name = "purchase_count", nullable = false)
+    private int purchaseCount = 0;
 
     @Column(nullable = false)
     private boolean active = true;
@@ -54,13 +53,9 @@ public class Product {
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    public enum Section {
-        NEW, RANKING, RECOMMEND
-    }
-
     @Builder
     public Product(String brand, String name, BigDecimal price, BigDecimal salePrice,
-                   BigDecimal rating, String imageUrl, String category, Section section) {
+                   BigDecimal rating, String imageUrl, String category) {
         this.brand = brand;
         this.name = name;
         this.price = price;
@@ -68,6 +63,5 @@ public class Product {
         this.rating = rating;
         this.imageUrl = imageUrl;
         this.category = category;
-        this.section = section;
     }
 }

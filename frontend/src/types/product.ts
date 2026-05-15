@@ -8,6 +8,7 @@ export interface Product {
   imageUrl?: string
   category?: string
   discountRate?: number
+  purchaseCount?: number
 }
 
 export type ProductSection = 'NEW' | 'RANKING' | 'RECOMMEND'
