@@ -6,8 +6,8 @@ export const authService = {
     const res = await apiClient.post<ApiResponse<AuthResponse>>('/auth/signup', data)
     const auth = res.data.data!
     setAccessToken(auth.accessToken)
-    // 민감하지 않은 식별자만 sessionStorage에 저장 (탭 닫으면 자동 삭제)
     sessionStorage.setItem('loggedIn', '1')
+    sessionStorage.setItem('role', auth.user.role)
     return auth
   },
 
@@ -16,6 +16,7 @@ export const authService = {
     const auth = res.data.data!
     setAccessToken(auth.accessToken)
     sessionStorage.setItem('loggedIn', '1')
+    sessionStorage.setItem('role', auth.user.role)
     return auth
   },
 
@@ -27,11 +28,17 @@ export const authService = {
     } finally {
       setAccessToken(null)
       sessionStorage.removeItem('loggedIn')
+      sessionStorage.removeItem('role')
     }
   },
 
   isLoggedIn(): boolean {
     if (typeof window === 'undefined') return false
     return sessionStorage.getItem('loggedIn') === '1'
+  },
+
+  isAdmin(): boolean {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('role') === 'ADMIN'
   },
 }
