@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 const FEATURES = [
   { title: '신뢰의 제품', desc: '엄선된 인디 브랜드의\n검증된 제품만 입점합니다' },
   { title: '에디터 검증', desc: '전문 뷰티 에디터가\n직접 사용하고 검증합니다' },
@@ -20,9 +22,9 @@ export default function BrandCTA() {
               브랜드만 입점할 수 있습니다.<br />
               당신의 브랜드를 소개해 주세요.
             </p>
-            <button className="px-5 py-2.5 bg-black text-white text-xs font-medium rounded hover:bg-gray-800 transition-colors">
+            <Link href="/apply" className="inline-block px-5 py-2.5 bg-black text-white text-xs font-medium rounded hover:bg-gray-800 transition-colors">
               입점 신청하기
-            </button>
+            </Link>
           </div>
 
           {/* 우측 4개 박스 */}
