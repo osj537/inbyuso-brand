@@ -40,8 +40,14 @@ public class Product {
     @Column(name = "image_url", length = 500)
     private String imageUrl;
 
-    @Column(length = 50)
-    private String category;
+    @Column(name = "main_category", length = 50)
+    private String mainCategory;
+
+    @Column(name = "sub_category", length = 100)
+    private String subCategory;
+
+    @Column(name = "detail_category", length = 100)
+    private String detailCategory;
 
     @Column(name = "purchase_count", nullable = false)
     private int purchaseCount = 0;
@@ -55,13 +61,15 @@ public class Product {
 
     @Builder
     public Product(String brand, String name, BigDecimal price, BigDecimal salePrice,
-                   BigDecimal rating, String imageUrl, String category) {
+                   BigDecimal rating, String imageUrl, String mainCategory, String subCategory, String detailCategory) {
         this.brand = brand;
         this.name = name;
         this.price = price;
         this.salePrice = salePrice;
         this.rating = rating;
         this.imageUrl = imageUrl;
-        this.category = category;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
+        this.detailCategory = detailCategory;
     }
 }

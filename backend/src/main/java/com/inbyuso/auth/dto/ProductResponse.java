@@ -12,7 +12,9 @@ public record ProductResponse(
         BigDecimal salePrice,
         BigDecimal rating,
         String imageUrl,
-        String category,
+        String mainCategory,
+        String subCategory,
+        String detailCategory,
         Integer discountRate,
         int purchaseCount
 ) {
@@ -31,7 +33,9 @@ public record ProductResponse(
                 product.getSalePrice(),
                 product.getRating(),
                 product.getImageUrl(),
-                product.getCategory(),
+                product.getMainCategory(),
+                product.getSubCategory(),
+                product.getDetailCategory(),
                 discountRate,
                 product.getPurchaseCount()
         );
