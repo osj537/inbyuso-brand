@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { bannerService, Banner, BannerRequest } from '@/lib/bannerService'
 import { uploadBannerImage } from '@/lib/supabase'
+import { apiClient, setAccessToken } from '@/lib/api'
+import { ApiResponse, AuthResponse } from '@/types/auth'
 
 export default function BannerAdminPage() {
   const [banners, setBanners] = useState<Banner[]>([])
@@ -16,7 +18,14 @@ export default function BannerAdminPage() {
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    loadBanners()
+    const init = async () => {
+      try {
+        const { data } = await apiClient.post<ApiResponse<AuthResponse>>('/auth/refresh')
+        setAccessToken(data.data!.accessToken)
+      } catch {}
+      loadBanners()
+    }
+    init()
   }, [])
 
   const loadBanners = async () => {
