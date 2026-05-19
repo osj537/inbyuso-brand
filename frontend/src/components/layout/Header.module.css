@@ -64,7 +64,7 @@
 }
 
 .searchInput {
-  @apply w-full h-10 px-4 pr-10 bg-white border border-gray-700 rounded text-sm text-white outline-none focus:border-gray-500;
+  @apply w-full h-10 px-4 pr-10 bg-white border border-gray-700 rounded text-sm text-gray-900 outline-none focus:border-gray-500;
   &::placeholder {
     color: #333333;
   }

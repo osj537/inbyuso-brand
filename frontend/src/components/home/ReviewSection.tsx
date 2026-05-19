@@ -31,7 +31,7 @@ const REVIEWS = [
 
 export default function ReviewSection() {
   return (
-    <section className="max-w-[1200px] mx-auto px-4 py-8">
+    <section className="max-w-[1200px] mx-auto px-4 py-10">
       <div className="flex gap-8">
         {/* 좌측 이미지 영역 */}
         <div className="w-[340px] flex-shrink-0 space-y-4">

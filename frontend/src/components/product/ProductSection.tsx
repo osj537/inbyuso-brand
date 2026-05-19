@@ -22,7 +22,7 @@ export default function ProductSection({ title, section }: ProductSectionProps) 
   }, [section])
 
   return (
-    <section className="max-w-[1200px] mx-auto px-4 py-8">
+    <section className="max-w-[1200px] mx-auto px-4 py-10">
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-base font-bold text-gray-900">{title}</h2>
         <button className="text-xs text-gray-400 hover:text-gray-600">더보기</button>
