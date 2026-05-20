@@ -31,7 +31,7 @@ export default function Header() {
   const handleLogout = async () => {
     await authService.logout();
     setIsLoggedIn(false);
-    router.push("/");
+    router.push("/main");
   };
 
   return (
@@ -50,7 +50,7 @@ export default function Header() {
             </button>
           ) : (
             <button
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/login")}
               className={styles.rightMenuItem}
             >
               로그인

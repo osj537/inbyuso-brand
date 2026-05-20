@@ -1,22 +1,26 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { authService } from '@/lib/authService'
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const [authorized, setAuthorized] = useState(false)
 
   useEffect(() => {
     if (!authService.isLoggedIn() || !authService.isAdmin()) {
-      router.push('/')
+      router.replace('/login')
+    } else {
+      setAuthorized(true)
     }
   }, [router])
 
+  if (!authorized) return null
+
   return (
     <div className="min-h-screen bg-gray-100 flex">
-      {/* 사이드바 */}
       <aside className="w-56 bg-black text-white flex-shrink-0">
         <div className="p-5 border-b border-gray-800">
           <Link href="/main" className="text-lg font-bold tracking-widest">INBYUSO</Link>
@@ -37,8 +41,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
         </nav>
       </aside>
-
-      {/* 메인 콘텐츠 */}
       <main className="flex-1 p-8 overflow-y-auto">
         {children}
       </main>
