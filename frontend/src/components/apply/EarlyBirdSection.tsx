@@ -45,7 +45,7 @@ export default function EarlyBirdSection() {
       </div>
 
       <a
-        href="mailto:hello@inbyuso.com"
+        href="/apply/form"
         className="inline-block bg-[#111] text-[#F8F6F2] px-12 py-4 text-sm tracking-[0.06em] hover:bg-[#1F3D2A] hover:-translate-y-0.5 transition-all duration-200"
       >
         입점 신청하기 →

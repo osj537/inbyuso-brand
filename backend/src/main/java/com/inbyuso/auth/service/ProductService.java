@@ -29,8 +29,21 @@ public class ProductService {
             default -> productRepository.findByActiveTrueOrderByCreatedAtDesc(pageable);
         };
 
-        return products.stream()
-                .map(ProductResponse::from)
-                .toList();
+        return products.stream().map(ProductResponse::from).toList();
+    }
+
+    public List<ProductResponse> getProductsByCategory(String mainCategory, String subCategory, String detailCategory) {
+        Pageable pageable = PageRequest.of(0, 40);
+
+        List<Product> products;
+        if (detailCategory != null && !detailCategory.isBlank()) {
+            products = productRepository.findByActiveTrueAndMainCategoryAndDetailCategoryOrderByCreatedAtDesc(mainCategory, detailCategory, pageable);
+        } else if (subCategory != null && !subCategory.isBlank()) {
+            products = productRepository.findByActiveTrueAndMainCategoryAndSubCategoryOrderByCreatedAtDesc(mainCategory, subCategory, pageable);
+        } else {
+            products = productRepository.findByActiveTrueAndMainCategoryOrderByCreatedAtDesc(mainCategory, pageable);
+        }
+
+        return products.stream().map(ProductResponse::from).toList();
     }
 }

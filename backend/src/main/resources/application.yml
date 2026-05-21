@@ -24,6 +24,18 @@ spring:
           lob:
             non_contextual_creation: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME:placeholder@gmail.com}
+    password: ${MAIL_PASSWORD:placeholder}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 server:
   port: 8080
   servlet:
@@ -39,6 +51,9 @@ rate-limit:
     capacity: 5
     refill-tokens: 5
     refill-duration-minutes: 1
+
+mail:
+  to: ${MAIL_TO:hello@inbyuso.com}
 
 logging:
   level:

@@ -47,8 +47,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/auth/signup", "/auth/login", "/auth/refresh").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/logout").authenticated()
-                .requestMatchers(HttpMethod.GET, "/products", "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products", "/products/**", "/products/category").permitAll()
                 .requestMatchers(HttpMethod.GET, "/banners").permitAll()
+                .requestMatchers(HttpMethod.POST, "/apply").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)

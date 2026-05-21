@@ -26,4 +26,14 @@ public class ProductController {
         List<ProductResponse> products = productService.getProductsBySection(section);
         return ResponseEntity.ok(ApiResponse.success("상품 조회 성공", products));
     }
+
+    @GetMapping("/category")
+    public ResponseEntity<ApiResponse<List<ProductResponse>>> getProductsByCategory(
+            @RequestParam String mainCategory,
+            @RequestParam(required = false) String subCategory,
+            @RequestParam(required = false) String detailCategory
+    ) {
+        List<ProductResponse> products = productService.getProductsByCategory(mainCategory, subCategory, detailCategory);
+        return ResponseEntity.ok(ApiResponse.success("카테고리 상품 조회 성공", products));
+    }
 }

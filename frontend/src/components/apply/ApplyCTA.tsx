@@ -9,7 +9,7 @@ export default function ApplyCTA() {
         인뷰소는 자본이 아닌 제품력으로 승부하는<br />인디 브랜드를 위해 만들었어요.
       </p>
       <a
-        href="mailto:hello@inbyuso.com"
+        href="/apply/form"
         className="inline-block bg-[#F8F6F2] text-[#111] px-12 py-4 text-[13px] font-medium tracking-[0.08em] hover:bg-[#F0EDE8] hover:-translate-y-0.5 transition-all duration-200"
       >
         지금 시작하기
