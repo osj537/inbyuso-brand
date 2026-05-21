@@ -43,7 +43,7 @@
 }
 
 .subNavItem {
-  @apply text-xs whitespace-nowrap font-medium transition-colors text-gray-400 hover:text-white;
+  @apply text-sm whitespace-nowrap font-medium transition-colors text-gray-400 hover:text-white;
 }
 
 .subNavItemActive {

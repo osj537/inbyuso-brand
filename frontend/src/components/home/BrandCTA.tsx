@@ -9,7 +9,7 @@ const FEATURES = [
 
 export default function BrandCTA() {
   return (
-    <section className="bg-gray-50 p-20 mt-10">
+    <section className="bg-[#F0EDE8] p-20 mt-10">
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="flex gap-12 items-center">
           {/* 좌측 텍스트 */}

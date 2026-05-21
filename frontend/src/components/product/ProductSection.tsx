@@ -22,35 +22,34 @@ export default function ProductSection({ title, section }: ProductSectionProps) 
   }, [section])
 
   return (
-    <section className="max-w-[1200px] mx-auto px-4 py-10">
-      <div className="flex items-center justify-between mb-5">
-        <h2 className="text-base font-bold text-gray-900">{title}</h2>
-        <button className="text-xs text-gray-400 hover:text-gray-600">더보기</button>
+    <section className="max-w-[1200px] mx-auto px-4 py-14">
+      {/* 섹션 헤더 */}
+      <div className="flex items-end justify-between mb-10">
+        <div className="flex items-center gap-3">
+          <div className="w-6 h-px bg-[#1F3D2A]" />
+          <h2 className="text-[22px] font-semibold tracking-tight uppercase text-[#1F3D2A]">{title}</h2>
+        </div>
+        <button className="text-[11px] text-[#B8B4AE] tracking-[0.08em] border-b border-[#D8D4CE] pb-px hover:text-[#111] hover:border-[#111] transition-colors">
+          더보기 →
+        </button>
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-5 gap-4">
-          {Array.from({ length: 10 }).map((_, i) => (
+        <div className="grid grid-cols-5 gap-5">
+          {Array.from({ length: 5 }).map((_, i) => (
             <div key={i} className="animate-pulse">
-              <div className="aspect-square bg-gray-200 rounded mb-2" />
-              <div className="h-3 bg-gray-200 rounded mb-1 w-1/2" />
-              <div className="h-3 bg-gray-200 rounded w-3/4" />
+              <div className="aspect-square bg-[#E8E5E0] mb-3" />
+              <div className="h-2.5 bg-[#E8E5E0] rounded mb-2 w-1/3" />
+              <div className="h-2.5 bg-[#E8E5E0] rounded w-2/3" />
             </div>
           ))}
         </div>
       ) : (
-        <>
-          <div className="grid grid-cols-5 gap-4 mb-6">
-            {products.slice(0, 5).map((p) => (
-              <ProductCard key={p.id} {...p} />
-            ))}
-          </div>
-          <div className="grid grid-cols-5 gap-4">
-            {products.slice(5, 10).map((p) => (
-              <ProductCard key={p.id} {...p} />
-            ))}
-          </div>
-        </>
+        <div className="grid grid-cols-5 gap-5">
+          {products.slice(0, 5).map((p) => (
+            <ProductCard key={p.id} {...p} />
+          ))}
+        </div>
       )}
     </section>
   )
