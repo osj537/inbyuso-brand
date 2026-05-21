@@ -16,14 +16,18 @@ interface SignupFormProps {
 export default function SignupForm({ onSuccess, onSwitchToLogin }: SignupFormProps) {
   const [serverError, setServerError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [showPw, setShowPw] = useState(false)
+  const [role, setRole] = useState<'CUSTOMER' | 'BRAND_OWNER'>('CUSTOMER')
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignupSchema>({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm<SignupSchema>({
     resolver: zodResolver(signupSchema),
+    defaultValues: { role: 'CUSTOMER' },
   })
+
+  const handleRoleSelect = (r: 'CUSTOMER' | 'BRAND_OWNER') => {
+    setRole(r)
+    setValue('role', r)
+  }
 
   const onSubmit = async (data: SignupSchema) => {
     setIsLoading(true)
@@ -40,85 +44,113 @@ export default function SignupForm({ onSuccess, onSwitchToLogin }: SignupFormPro
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-8 bg-white rounded-2xl shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">회원가입</h2>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-        <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
-            사용자명
-          </label>
-          <input
-            id="username"
-            type="text"
-            autoComplete="username"
-            {...register('username')}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="사용자명 입력"
-          />
-          {errors.username && (
-            <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
-          )}
+    <div className="flex flex-col overflow-y-auto flex-1">
+      <div className="flex-1 flex flex-col justify-center px-14 py-16">
+        {/* 아이브로우 */}
+        <div className="flex items-center gap-2.5 mb-3.5">
+          <div className="w-6 h-px bg-[#1F3D2A]" />
+          <span className="text-[9px] tracking-[0.24em] uppercase text-[#1F3D2A] font-medium">회원가입</span>
         </div>
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            이메일
-          </label>
-          <input
-            id="email"
-            type="email"
-            autoComplete="email"
-            {...register('email')}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="name@example.com"
-          />
-          {errors.email && (
-            <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>
-          )}
+        <h1 className="text-[30px] font-bold tracking-[-0.04em] text-[#111] mb-1.5">인뷰소 함께하기</h1>
+        <p className="text-[13px] text-[#888480] font-light mb-8 leading-relaxed">어떤 유형으로 함께하실지 선택해주세요</p>
+
+        {/* 역할 선택 */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          {([
+            { value: 'CUSTOMER', label: '일반 회원', desc: '인디 뷰티 브랜드를\n발견하고 구매해요' },
+            { value: 'BRAND_OWNER', label: '브랜드 오너', desc: '인뷰소에 브랜드를\n입점하고 관리해요' },
+          ] as const).map((r) => (
+            <button
+              key={r.value}
+              type="button"
+              onClick={() => handleRoleSelect(r.value)}
+              className={`p-4 text-left border-[1.5px] transition-all ${role === r.value ? 'border-[#111] bg-[#F0EDE8]' : 'border-[#D8D4CE] hover:border-[#888480]'}`}
+            >
+              <div className={`w-3 h-3 rounded-full border-[1.5px] mb-3 flex items-center justify-center ${role === r.value ? 'border-[#111] bg-[#111]' : 'border-[#D8D4CE]'}`}>
+                {role === r.value && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+              </div>
+              <p className={`text-[13px] font-semibold mb-1 ${role === r.value ? 'text-[#111]' : 'text-[#888480]'}`}>{r.label}</p>
+              <p className="text-[11px] text-[#B8B4AE] font-light leading-relaxed whitespace-pre-line">{r.desc}</p>
+            </button>
+          ))}
         </div>
 
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-            비밀번호
-          </label>
-          <input
-            id="password"
-            type="password"
-            autoComplete="new-password"
-            {...register('password')}
-            className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            placeholder="대소문자+숫자+특수문자 8자 이상"
-          />
-          {errors.password && (
-            <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
-          )}
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <input type="hidden" {...register('role')} />
 
-        {serverError && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
-            <p className="text-sm text-red-700">{serverError}</p>
+          <div className="flex flex-col mb-4">
+            {/* 사용자명 */}
+            <div className="relative border-b-[1.5px] border-[#D8D4CE] focus-within:border-[#111] transition-colors">
+              <label className="block text-[9px] font-semibold tracking-[0.14em] uppercase text-[#B8B4AE] pt-4">사용자명</label>
+              <input
+                type="text"
+                autoComplete="username"
+                {...register('username')}
+                className="w-full border-none bg-transparent py-2 pb-3.5 text-[15px] font-light text-[#111] outline-none placeholder-[#B8B4AE]"
+                placeholder="2자 이상 한글/영문/숫자"
+              />
+              {errors.username && <p className="text-xs text-[#B84A28] pb-2">{errors.username.message}</p>}
+            </div>
+
+            {/* 이메일 */}
+            <div className="relative border-b-[1.5px] border-[#D8D4CE] focus-within:border-[#111] transition-colors mt-1">
+              <label className="block text-[9px] font-semibold tracking-[0.14em] uppercase text-[#B8B4AE] pt-4">이메일</label>
+              <input
+                type="email"
+                autoComplete="email"
+                {...register('email')}
+                className="w-full border-none bg-transparent py-2 pb-3.5 text-[15px] font-light text-[#111] outline-none placeholder-[#B8B4AE]"
+                placeholder="hello@email.com"
+              />
+              {errors.email && <p className="text-xs text-[#B84A28] pb-2">{errors.email.message}</p>}
+            </div>
+
+            {/* 비밀번호 */}
+            <div className="relative border-b-[1.5px] border-[#D8D4CE] focus-within:border-[#111] transition-colors mt-1">
+              <label className="block text-[9px] font-semibold tracking-[0.14em] uppercase text-[#B8B4AE] pt-4">비밀번호</label>
+              <input
+                type={showPw ? 'text' : 'password'}
+                autoComplete="new-password"
+                {...register('password')}
+                className="w-full border-none bg-transparent py-2 pb-3.5 text-[15px] font-light text-[#111] outline-none placeholder-[#B8B4AE] pr-12"
+                placeholder="8자 이상"
+              />
+              <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-0 bottom-3.5 text-[11px] text-[#B8B4AE] hover:text-[#888480] transition-colors">
+                {showPw ? '숨기기' : '보기'}
+              </button>
+              {errors.password && <p className="text-xs text-[#B84A28] pb-2">{errors.password.message}</p>}
+            </div>
           </div>
-        )}
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-lg transition-colors"
-        >
-          {isLoading ? '가입 중...' : '회원가입'}
-        </button>
-      </form>
+          {serverError && <p className="text-xs text-[#B84A28] mb-4">{serverError}</p>}
 
-      <p className="mt-4 text-center text-sm text-gray-600">
-        이미 계정이 있으신가요?{' '}
-        <button
-          onClick={onSwitchToLogin}
-          className="text-blue-600 hover:underline font-medium"
-        >
-          로그인
-        </button>
-      </p>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-4 bg-[#111] text-[#F8F6F2] text-sm font-semibold tracking-[0.04em] hover:bg-[#1F3D2A] disabled:bg-[#B8B4AE] transition-colors mt-2 mb-8"
+          >
+            {isLoading ? '가입 중...' : '회원가입'}
+          </button>
+        </form>
+
+        <div className="pt-6 border-t border-[#D8D4CE] flex items-center justify-end">
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-[#888480] font-light">이미 계정이 있으신가요?</span>
+            <button
+              onClick={onSwitchToLogin}
+              className="text-xs font-semibold text-[#111] border-b-[1.5px] border-[#111] pb-px hover:text-[#1F3D2A] hover:border-[#1F3D2A] transition-colors"
+            >
+              로그인
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-14 py-5 border-t border-[#D8D4CE] flex justify-between items-center">
+        <span className="text-[11px] font-bold tracking-[0.2em] uppercase text-[#B8B4AE]">INBYUSO</span>
+        <span className="text-[10px] text-[#B8B4AE]">© 2026 인뷰소</span>
+      </div>
     </div>
   )
 }

@@ -11,6 +11,7 @@ export const signupSchema = z.object({
     .min(2, '사용자명은 2자 이상이어야 합니다')
     .max(50)
     .regex(/^[a-zA-Z0-9가-힣_-]+$/, '허용되지 않는 문자가 포함되어 있습니다'),
+  role: z.enum(['CUSTOMER', 'BRAND_OWNER']),
 })
 
 export const loginSchema = z.object({

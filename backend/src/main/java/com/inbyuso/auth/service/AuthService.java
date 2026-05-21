@@ -50,10 +50,16 @@ public class AuthService {
             throw AuthException.emailAlreadyExists();
         }
 
+        User.Role role = User.Role.CUSTOMER;
+        if ("BRAND_OWNER".equals(request.role())) {
+            role = User.Role.BRAND_OWNER;
+        }
+
         User user = User.builder()
                 .email(request.email())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .username(request.username())
+                .role(role)
                 .build();
 
         userRepository.save(user);

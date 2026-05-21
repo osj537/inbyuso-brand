@@ -41,4 +41,14 @@ export const authService = {
     if (typeof window === 'undefined') return false
     return sessionStorage.getItem('role') === 'ADMIN'
   },
+
+  isBrandOwner(): boolean {
+    if (typeof window === 'undefined') return false
+    return sessionStorage.getItem('role') === 'BRAND_OWNER'
+  },
+
+  getRole(): string | null {
+    if (typeof window === 'undefined') return null
+    return sessionStorage.getItem('role')
+  },
 }

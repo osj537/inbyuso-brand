@@ -37,7 +37,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private Role role = Role.USER;
+    private Role role = Role.CUSTOMER;
 
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
@@ -57,10 +57,11 @@ public class User {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User(String email, String passwordHash, String username) {
+    public User(String email, String passwordHash, String username, Role role) {
         this.email = email;
         this.passwordHash = passwordHash;
         this.username = username;
+        if (role != null) this.role = role;
     }
 
     public void recordFailedLogin() {
@@ -80,6 +81,6 @@ public class User {
     }
 
     public enum Role {
-        USER, ADMIN
+        CUSTOMER, BRAND_OWNER, ADMIN
     }
 }
