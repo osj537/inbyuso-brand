@@ -1,14 +1,32 @@
-const REVIEWS = [
-  { product: '그린 토닉 에센스 150ml', rating: 4.8, text: '피부에 잘 흡수되고 촉촉해요. 트러블도 없고 정말 만족합니다. 재구매 의사 있어요!', author: 'user****', date: '2026.05.01' },
-  { product: '그린 토닉 에센스 150ml', rating: 4.8, text: '향이 은은하고 좋아요. 피부가 한결 맑아진 느낌이에요. 추천합니다!', author: 'skin****', date: '2026.05.03' },
-  { product: '그린 토닉 에센스 150ml', rating: 4.6, text: '처음엔 반신반의했는데 써보니 정말 좋네요. 친구한테도 추천했어요.', author: 'beau****', date: '2026.05.05' },
-  { product: '그린 토닉 에센스 150ml', rating: 4.9, text: '예민한 피부인데도 자극 없이 잘 맞아요. 보습력이 오래가요.', author: 'dry_****', date: '2026.05.07' },
-]
+'use client'
+
+import { useEffect, useState } from 'react'
+import { apiClient } from '@/lib/api'
+import { ApiResponse } from '@/types/auth'
+
+interface Review {
+  id: string
+  productName: string
+  email: string
+  rating: number
+  text: string
+  imageUrl?: string
+  createdAt: string
+}
 
 export default function ReviewSection() {
+  const [reviews, setReviews] = useState<Review[]>([])
+
+  useEffect(() => {
+    apiClient.get<ApiResponse<Review[]>>('/reviews')
+      .then(res => setReviews(res.data.data ?? []))
+      .catch(() => setReviews([]))
+  }, [])
+
+  if (reviews.length === 0) return null
+
   return (
     <section className="max-w-[1200px] mx-auto px-4 py-14">
-      {/* 헤더 */}
       <div className="flex items-end justify-between mb-10">
         <div className="flex items-center gap-3">
           <div className="w-6 h-px bg-[#1F3D2A]" />
@@ -20,8 +38,8 @@ export default function ReviewSection() {
       </div>
 
       <div className="grid grid-cols-4 gap-px bg-[#D8D4CE] border border-[#D8D4CE]">
-        {REVIEWS.map((r, i) => (
-          <div key={i} className="bg-[#F8F6F2] p-5 hover:bg-[#F0EDE8] transition-colors">
+        {reviews.slice(0, 4).map((r) => (
+          <div key={r.id} className="bg-[#F8F6F2] p-5 hover:bg-[#F0EDE8] transition-colors">
             <div className="bg-[#E8E5E0] aspect-square mb-4" />
             <div className="flex items-center gap-1 mb-2">
               {Array.from({ length: 5 }).map((_, s) => (
@@ -31,11 +49,11 @@ export default function ReviewSection() {
               ))}
               <span className="text-[10px] text-[#888480] ml-1">{r.rating}</span>
             </div>
-            <p className="text-[11px] text-[#888480] tracking-[0.05em] mb-1.5">{r.product}</p>
+            <p className="text-[11px] text-[#888480] tracking-[0.05em] mb-1.5">{r.productName}</p>
             <p className="text-[12px] text-[#111] leading-relaxed line-clamp-3 font-light mb-3">{r.text}</p>
             <div className="flex items-center justify-between text-[10px] text-[#B8B4AE] pt-3 border-t border-[#D8D4CE]">
-              <span>{r.author}</span>
-              <span>{r.date}</span>
+              <span>{r.email.slice(0, 4)}{'****'}</span>
+              <span>{r.createdAt}</span>
             </div>
           </div>
         ))}

@@ -66,7 +66,7 @@ export default function ProductCard({ brand, name, price, salePrice, rating = 4.
       </div>
 
       {/* 정보 영역 */}
-      <div>
+      <div className="px-3 pt-3">
         <p className="text-[10px] text-[#B8B4AE] tracking-[0.08em] uppercase mb-1">{brand}</p>
         <p className="text-[13px] text-[#111] leading-snug mb-2 line-clamp-2 font-light">{name}</p>
         <div className="flex items-center gap-1.5">

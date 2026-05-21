@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import ProductCard from './ProductCard'
 import { productService } from '@/lib/productService'
 import { Product, ProductSection as Section } from '@/types/product'
@@ -13,6 +13,8 @@ interface ProductSectionProps {
 export default function ProductSection({ title, section }: ProductSectionProps) {
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
+  const [scrollX, setScrollX] = useState(0)
+  const trackRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     productService.getProducts(section)
@@ -21,10 +23,24 @@ export default function ProductSection({ title, section }: ProductSectionProps) 
       .finally(() => setLoading(false))
   }, [section])
 
+  useEffect(() => {
+    if (products.length <= 5) return
+    const cardWidth = trackRef.current ? trackRef.current.offsetWidth / 5 : 0
+    const maxScroll = (Math.min(products.length, 10) - 5) * cardWidth
+
+    const timer = setInterval(() => {
+      setScrollX(prev => {
+        const next = prev + cardWidth
+        return next >= maxScroll ? 0 : next
+      })
+    }, 5000)
+
+    return () => clearInterval(timer)
+  }, [products.length])
+
   return (
-    <section className="max-w-[1200px] mx-auto px-4 py-14">
-      {/* 섹션 헤더 */}
-      <div className="flex items-end justify-between mb-10">
+    <section className="py-14">
+      <div className="flex items-center justify-between mb-10 max-w-[1200px] mx-auto px-4">
         <div className="flex items-center gap-3">
           <div className="w-6 h-px bg-[#1F3D2A]" />
           <h2 className="text-[22px] font-semibold tracking-tight uppercase text-[#1F3D2A]">{title}</h2>
@@ -34,23 +50,32 @@ export default function ProductSection({ title, section }: ProductSectionProps) 
         </button>
       </div>
 
-      {loading ? (
-        <div className="grid grid-cols-5 gap-5">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="animate-pulse">
-              <div className="aspect-square bg-[#E8E5E0] mb-3" />
-              <div className="h-2.5 bg-[#E8E5E0] rounded mb-2 w-1/3" />
-              <div className="h-2.5 bg-[#E8E5E0] rounded w-2/3" />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-5 gap-5">
-          {products.slice(0, 5).map((p) => (
-            <ProductCard key={p.id} {...p} />
-          ))}
-        </div>
-      )}
+      <div className="overflow-hidden" ref={trackRef}>
+        {loading ? (
+          <div className="grid grid-cols-5 gap-0">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-square bg-[#E8E5E0]" />
+                <div className="px-3 pt-3">
+                  <div className="h-2.5 bg-[#E8E5E0] rounded mb-2 w-1/3" />
+                  <div className="h-2.5 bg-[#E8E5E0] rounded w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${scrollX}px)` }}
+          >
+            {products.slice(0, 10).map((p) => (
+              <div key={p.id} className="flex-shrink-0" style={{ width: '20%' }}>
+                <ProductCard {...p} />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </section>
   )
 }
