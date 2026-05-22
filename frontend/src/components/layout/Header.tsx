@@ -27,6 +27,7 @@ export default function Header() {
   const handleLogout = async () => {
     await authService.logout();
     setIsLoggedIn(false);
+    setIsBrandOwner(false);
     router.push("/main");
   };
 

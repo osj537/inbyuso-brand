@@ -21,7 +21,9 @@ export default function CategoryPage() {
   const [activeDetail, setActiveDetail] = useState<string | null>(null)
   const [products, setProducts] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
-  const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'rating'>('newest')
+  const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'rating' | 'priceLow' | 'priceHigh'>('newest')
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 16
 
   const fetchProducts = async (sub: string | null, detail: string | null, slug = categorySlug) => {
     setLoading(true)
@@ -50,11 +52,13 @@ export default function CategoryPage() {
   const handleSubClick = (sub: string | null) => {
     setActiveSub(sub)
     setActiveDetail(null)
+    setPage(1)
     fetchProducts(sub, null)
   }
 
   const handleDetailClick = (detail: string) => {
     setActiveDetail(detail)
+    setPage(1)
     fetchProducts(activeSub, detail)
   }
 
@@ -128,18 +132,21 @@ export default function CategoryPage() {
 
         {/* 정렬 */}
         <div className="max-w-[1200px] mx-auto px-4 pt-10 pb-3 flex items-center gap-4">
-          {(['newest', 'popular', 'rating'] as const).map((option, i) => {
-            const label = option === 'newest' ? '최신순' : option === 'popular' ? '인기순' : '평점순'
-            return (
-              <button
-                key={option}
-                onClick={() => setSortBy(option)}
-                className={`text-sm transition-colors ${sortBy === option ? 'text-black font-semibold' : 'text-gray-400 hover:text-gray-600'} ${i !== 0 ? 'border-l border-gray-200 pl-4' : ''}`}
-              >
-                {label}
-              </button>
-            )
-          })}
+          {([
+            { key: 'newest', label: '최신순' },
+            { key: 'popular', label: '인기순' },
+            { key: 'rating', label: '평점순' },
+            { key: 'priceLow', label: '낮은가격순' },
+            { key: 'priceHigh', label: '높은가격순' },
+          ] as const).map((option, i) => (
+            <button
+              key={option.key}
+              onClick={() => setSortBy(option.key)}
+              className={`text-sm transition-colors ${sortBy === option.key ? 'text-black font-semibold' : 'text-gray-400 hover:text-gray-600'} ${i !== 0 ? 'border-l border-gray-200 pl-4' : ''}`}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
 
         {/* 상품 목록 */}
@@ -158,19 +165,31 @@ export default function CategoryPage() {
             <div className="text-center py-20 text-gray-400">
               <p className="text-sm">등록된 상품이 없습니다</p>
             </div>
-          ) : (
-            <div className="grid grid-cols-4 gap-4">
-              {[...products]
-                .sort((a, b) => {
-                  if (sortBy === 'popular') return (b.purchaseCount ?? 0) - (a.purchaseCount ?? 0)
-                  if (sortBy === 'rating') return (b.rating ?? 0) - (a.rating ?? 0)
-                  return 0
-                })
-                .map(p => (
-                <ProductCard key={p.id} {...p} />
-              ))}
-            </div>
-          )}
+          ) : (() => {
+            const sorted = [...products].sort((a, b) => {
+              if (sortBy === 'popular') return (b.purchaseCount ?? 0) - (a.purchaseCount ?? 0)
+              if (sortBy === 'rating') return (b.rating ?? 0) - (a.rating ?? 0)
+              if (sortBy === 'priceLow') return (a.salePrice ?? a.price) - (b.salePrice ?? b.price)
+              if (sortBy === 'priceHigh') return (b.salePrice ?? b.price) - (a.salePrice ?? a.price)
+              return 0
+            })
+            const totalPages = Math.ceil(sorted.length / PAGE_SIZE)
+            const paged = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+            return (
+              <>
+                <div className="grid grid-cols-4 gap-4">
+                  {paged.map(p => <ProductCard key={p.id} {...p} />)}
+                </div>
+                {totalPages >= 1 && (
+                  <div className="flex items-center justify-center gap-2 mt-10">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(n => (
+                      <button key={n} onClick={() => setPage(n)} className={`text-sm px-2 transition-colors ${page === n ? 'text-[#111] font-semibold' : 'text-[#B8B4AE] hover:text-[#111]'}`}>{n}</button>
+                    ))}
+                  </div>
+                )}
+              </>
+            )
+          })()}
         </div>
         <BrandCTA />
       </main>
