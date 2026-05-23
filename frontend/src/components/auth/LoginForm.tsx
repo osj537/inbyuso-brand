@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, LoginSchema } from '@/lib/validations'
 import { authService } from '@/lib/authService'
+import { useLoadWishlist } from '@/context/AuthContext'
 import { AxiosError } from 'axios'
 import { ApiResponse } from '@/types/auth'
 
@@ -22,11 +23,14 @@ export default function LoginForm({ onSuccess, onSwitchToSignup }: LoginFormProp
     resolver: zodResolver(loginSchema),
   })
 
+  const loadWishlist = useLoadWishlist()
+
   const onSubmit = async (data: LoginSchema) => {
     setIsLoading(true)
     setServerError(null)
     try {
       await authService.login(data)
+      await loadWishlist()
       onSuccess()
     } catch (err) {
       const error = err as AxiosError<ApiResponse>

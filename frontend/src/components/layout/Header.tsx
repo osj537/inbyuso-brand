@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { authService } from "@/lib/authService";
+import { useLogout } from "@/context/AuthContext";
 import { CATEGORIES } from "@/lib/categoryData";
 import SearchOverlay from "./SearchOverlay";
 import styles from "./Header.module.css";
@@ -24,8 +25,10 @@ export default function Header() {
     Promise.resolve(authService.isBrandOwner()).then(setIsBrandOwner);
   }, []);
 
+  const logout = useLogout();
+
   const handleLogout = async () => {
-    await authService.logout();
+    await logout();
     setIsLoggedIn(false);
     setIsBrandOwner(false);
     router.push("/main");

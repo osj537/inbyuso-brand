@@ -2,30 +2,19 @@
 
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { productService } from "@/lib/productService";
-import { Product, ProductSection as Section } from "@/types/product";
+import { Product } from "@/types/product";
 
 interface ProductSectionProps {
   title: string;
-  section: Section;
+  products: Product[];
 }
 
 export default function ProductSection({
   title,
-  section,
+  products,
 }: ProductSectionProps) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(0);
   const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    productService
-      .getProducts(section)
-      .then(setProducts)
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
-  }, [section]);
 
   const maxPage = Math.max(0, Math.min(products.length, 10) - 5);
 
@@ -59,20 +48,7 @@ export default function ProductSection({
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          {loading ? (
-            <div className="grid grid-cols-5 gap-0">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="aspect-square bg-[#E8E5E0]" />
-                  <div className="px-3 pt-3">
-                    <div className="h-2.5 bg-[#E8E5E0] rounded mb-2 w-1/3" />
-                    <div className="h-2.5 bg-[#E8E5E0] rounded w-2/3" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div
+          <div
               className="flex transition-transform duration-700 ease-in-out"
               style={{ transform: `translateX(-${page * 20}%)` }}
             >
@@ -82,7 +58,6 @@ export default function ProductSection({
                 </div>
               ))}
             </div>
-          )}
         </div>
       </div>
     </section>

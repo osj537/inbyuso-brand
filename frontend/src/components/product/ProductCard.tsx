@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types/product";
+import { wishlistService } from "@/lib/wishlistService";
+import { authService } from "@/lib/authService";
+import { useWishlist } from "@/context/AuthContext";
 
 type ProductCardProps = Pick<
   Product,
@@ -54,6 +56,7 @@ function BrandImage({ brand, name }: { brand: string; name: string }) {
 }
 
 export default function ProductCard({
+  id,
   slug,
   brand,
   name,
@@ -62,8 +65,23 @@ export default function ProductCard({
   rating = 4.8,
   discountRate,
 }: ProductCardProps) {
-  const [wished, setWished] = useState(false);
   const router = useRouter();
+  const { wishedIds, toggleWish } = useWishlist();
+  const wished = wishedIds.has(id);
+
+  async function handleWishToggle(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (!authService.isLoggedIn()) {
+      router.push("/login");
+      return;
+    }
+    toggleWish(id);
+    try {
+      await wishlistService.toggle(id);
+    } catch {
+      toggleWish(id);
+    }
+  }
 
   return (
     <div
@@ -75,10 +93,7 @@ export default function ProductCard({
         <BrandImage brand={brand} name={name} />
 
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setWished(!wished);
-          }}
+          onClick={handleWishToggle}
           className={`absolute top-3 right-3 z-10 w-6 h-6 flex items-center justify-center transition-colors ${wished ? "text-[#B84A28]" : "text-white/70 hover:text-white"}`}
         >
           <svg

@@ -8,6 +8,9 @@ import Footer from "@/components/layout/Footer";
 import { apiClient } from "@/lib/api";
 import { ApiResponse } from "@/types/auth";
 import { Product } from "@/types/product";
+import { wishlistService } from "@/lib/wishlistService";
+import { authService } from "@/lib/authService";
+import { useWishlist } from "@/context/AuthContext";
 
 const BRAND_STYLES: Record<string, { bg: string; text: string }> = {
   Innature: { bg: "#DDE8E0", text: "#3A6B4A" },
@@ -25,7 +28,8 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
-  const [wished, setWished] = useState(false);
+  const { wishedIds, toggleWish } = useWishlist();
+  const wished = product ? wishedIds.has(product.id) : false;
 
   useEffect(() => {
     apiClient
@@ -34,6 +38,20 @@ export default function ProductDetailPage() {
       .catch(() => router.push("/main"))
       .finally(() => setLoading(false));
   }, [params.slug, router]);
+
+  async function handleWishToggle() {
+    if (!product) return;
+    if (!authService.isLoggedIn()) {
+      router.push("/login");
+      return;
+    }
+    toggleWish(product.id);
+    try {
+      await wishlistService.toggle(product.id);
+    } catch {
+      toggleWish(product.id);
+    }
+  }
 
   if (loading)
     return (
@@ -197,7 +215,7 @@ export default function ProductDetailPage() {
             {/* 버튼 */}
             <div className="flex gap-3">
               <button
-                onClick={() => setWished(!wished)}
+                onClick={handleWishToggle}
                 className={`w-12 h-12 border flex items-center justify-center transition-colors ${wished ? "border-[#B84A28] text-[#B84A28]" : "border-[#D8D4CE] text-[#B8B4AE] hover:border-[#111] hover:text-[#111]"}`}
               >
                 <svg

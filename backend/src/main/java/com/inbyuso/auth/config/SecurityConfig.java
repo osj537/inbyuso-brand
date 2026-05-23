@@ -51,6 +51,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/banners").permitAll()
                 .requestMatchers(HttpMethod.GET, "/reviews", "/reviews/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/apply").permitAll()
+                .requestMatchers("/wishlist/**").authenticated()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
