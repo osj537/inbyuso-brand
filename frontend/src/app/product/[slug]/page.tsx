@@ -29,11 +29,11 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     apiClient
-      .get<ApiResponse<Product>>(`/products/${params.id}`)
+      .get<ApiResponse<Product>>(`/products/slug/${params.slug}`)
       .then((res) => setProduct(res.data.data ?? null))
       .catch(() => router.push("/main"))
       .finally(() => setLoading(false));
-  }, [params.id, router]);
+  }, [params.slug, router]);
 
   if (loading)
     return (

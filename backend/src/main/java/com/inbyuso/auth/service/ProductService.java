@@ -26,6 +26,12 @@ public class ProductService {
         return ProductResponse.from(product);
     }
 
+    public ProductResponse getProductBySlug(String slug) {
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다"));
+        return ProductResponse.from(product);
+    }
+
     public List<ProductResponse> getProductsBySection(String section) {
         Pageable pageable = PageRequest.of(0, DEFAULT_LIMIT);
 

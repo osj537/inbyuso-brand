@@ -29,6 +29,11 @@ public class ProductController {
         return ResponseEntity.ok(ApiResponse.success("상품 조회 성공", productService.getProduct(id)));
     }
 
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<ApiResponse<ProductResponse>> getProductBySlug(@PathVariable String slug) {
+        return ResponseEntity.ok(ApiResponse.success("상품 조회 성공", productService.getProductBySlug(slug)));
+    }
+
     @GetMapping("/category")
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getProductsByCategory(
             @RequestParam String mainCategory,

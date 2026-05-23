@@ -22,6 +22,9 @@ public class Product {
     @Column(columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
+    @Column(nullable = false, unique = true, length = 300)
+    private String slug;
+
     @Column(nullable = false, length = 100)
     private String brand;
 
@@ -64,6 +67,7 @@ public class Product {
                    BigDecimal rating, String imageUrl, String mainCategory, String subCategory, String detailCategory) {
         this.brand = brand;
         this.name = name;
+        this.slug = name.toLowerCase().replaceAll("[^가-힣a-z0-9]+", "-").replaceAll("-+", "-").replaceAll("^-|-$", "");
         this.price = price;
         this.salePrice = salePrice;
         this.rating = rating;

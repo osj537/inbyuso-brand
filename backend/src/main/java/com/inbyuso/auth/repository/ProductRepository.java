@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductRepository extends JpaRepository<Product, UUID> {
@@ -26,4 +27,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
 
     // 디테일 카테고리별 조회
     List<Product> findByActiveTrueAndMainCategoryAndDetailCategoryOrderByCreatedAtDesc(String mainCategory, String detailCategory, Pageable pageable);
+
+    Optional<Product> findBySlug(String slug);
 }
