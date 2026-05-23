@@ -7,6 +7,8 @@ export interface Product {
   rating?: number;
   imageUrl?: string;
   mainCategory?: string;
+  subCategory?: string;
+  detailCategory?: string;
   discountRate?: number;
   purchaseCount?: number;
 }
