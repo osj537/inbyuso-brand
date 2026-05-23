@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Product } from '@/types/product'
 
-type ProductCardProps = Pick<Product, 'brand' | 'name' | 'price' | 'salePrice' | 'rating' | 'imageUrl' | 'discountRate'>
+type ProductCardProps = Pick<Product, 'id' | 'brand' | 'name' | 'price' | 'salePrice' | 'rating' | 'imageUrl' | 'discountRate'>
 
 const BRAND_STYLES: Record<string, { from: string; to: string; text: string }> = {
   'Innature':    { from: '#C8DDD0', to: '#8FB5A0', text: '#2D5A45' },
@@ -40,11 +41,12 @@ function BrandImage({ brand, name }: { brand: string; name: string }) {
   return <img src={src} alt={name} className="w-full h-full object-cover" />
 }
 
-export default function ProductCard({ brand, name, price, salePrice, rating = 4.8, discountRate }: ProductCardProps) {
+export default function ProductCard({ id, brand, name, price, salePrice, rating = 4.8, discountRate }: ProductCardProps) {
   const [wished, setWished] = useState(false)
+  const router = useRouter()
 
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer" onClick={() => router.push(`/product/${id}`)}>
       {/* 이미지 영역 */}
       <div className="relative aspect-square overflow-hidden mb-3">
         <BrandImage brand={brand} name={name} />

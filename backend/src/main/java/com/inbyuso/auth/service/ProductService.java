@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,12 @@ public class ProductService {
 
     private static final int DEFAULT_LIMIT = 10;
     private final ProductRepository productRepository;
+
+    public ProductResponse getProduct(String id) {
+        Product product = productRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다"));
+        return ProductResponse.from(product);
+    }
 
     public List<ProductResponse> getProductsBySection(String section) {
         Pageable pageable = PageRequest.of(0, DEFAULT_LIMIT);
