@@ -17,6 +17,7 @@ const SUB_NAV = [
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isBrandOwner, setIsBrandOwner] = useState(false);
+  const [showToast, setShowToast] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -31,7 +32,12 @@ export default function Header() {
     await logout();
     setIsLoggedIn(false);
     setIsBrandOwner(false);
-    router.push("/main");
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+      router.push("/main");
+      router.refresh();
+    }, 1500);
   };
 
   const getActiveItem = () => {
@@ -43,6 +49,7 @@ export default function Header() {
   const activeItem = getActiveItem()
 
   return (
+    <>
     <header className={styles.header}>
       <div className={styles.mainNav}>
         <Link href="/main" className={styles.logo}>INBYUSO</Link>
@@ -83,5 +90,12 @@ export default function Header() {
         </div>
       </div>
     </header>
+
+    {showToast && (
+      <div className="fixed bottom-6 left-0 right-0 mx-auto w-fit bg-gray-800 text-white text-sm px-5 py-3 rounded-full shadow-lg z-50 animate-fade-in">
+        로그아웃 되었습니다
+      </div>
+    )}
+    </>
   );
 }

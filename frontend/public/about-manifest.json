@@ -1,0 +1,10 @@
+{
+  "name": "INBYUSO",
+  "short_name": "INBYUSO",
+  "description": "인뷰소 회사소개",
+  "start_url": "/about",
+  "display": "standalone",
+  "background_color": "#1A1A1A",
+  "theme_color": "#1A1A1A",
+  "orientation": "portrait"
+}
