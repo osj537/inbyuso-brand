@@ -464,8 +464,13 @@
   /* Hero */
   .hero {
     min-height: 100dvh;
-    padding: 80px 0 64px;
-    align-items: center;
+    padding: 0 0 64px;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .hero .container {
+    padding-bottom: 20dvh;
   }
 
   .hero::after {
