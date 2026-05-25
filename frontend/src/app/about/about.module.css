@@ -441,7 +441,6 @@
 
 /* Responsive — 모바일 */
 @media (max-width: 860px) {
-  /* 레이아웃 */
   .split,
   .cardGrid,
   .flow,
@@ -451,35 +450,35 @@
 
   .split {
     gap: 40px;
+    padding: 72px 0;
   }
 
-  /* 섹션 패딩 축소 */
-  .split,
   .cards,
   .darkSection,
   .contactSection {
-    padding: 64px 0;
+    padding: 72px 0;
   }
 
-  /* Hero */
+  /* Hero — 데스크톱처럼 center */
   .hero {
     min-height: 100dvh;
-    padding: 0 0 64px;
-    align-items: flex-end;
-    justify-content: center;
+    align-items: center;
+    padding: 0;
   }
 
-  .hero .container {
-    padding-bottom: 20dvh;
+  .heroCopy {
+    padding-top: 72px;
   }
 
   .hero::after {
-    right: -20vw;
-    top: auto;
-    bottom: 30%;
-    width: 100vw;
-    font-size: 32vw;
-    line-height: 1;
+    right: -8vw;
+    top: 12vh;
+    bottom: auto;
+    width: 90vw;
+    font-size: 22vw;
+    line-height: 0.78;
+    word-break: break-all;
+    white-space: normal;
   }
 
   .heroNav {
@@ -493,80 +492,68 @@
     font-size: 12px;
   }
 
-  .heroCopy {
-    padding-top: 0;
+  .h1 {
+    font-size: clamp(52px, 14vw, 80px);
   }
 
-  .h1 {
-    font-size: clamp(46px, 13vw, 72px);
-    text-shadow: none;
+  .h2 {
+    font-size: clamp(40px, 11vw, 64px);
   }
 
   .hero p {
     font-size: 15px;
-    margin-top: 24px;
-    line-height: 1.85;
+    margin-top: 28px;
+    line-height: 1.9;
   }
 
   .btnRow {
-    margin-top: 32px;
+    margin-top: 36px;
     gap: 10px;
   }
 
   .btn {
-    padding: 14px 22px;
+    padding: 15px 24px;
     font-size: 11px;
-    /* 터치 영역 확보 */
     min-height: 48px;
     display: flex;
     align-items: center;
   }
 
-  /* Typography */
-  .h2 {
-    font-size: clamp(36px, 10vw, 58px);
-  }
-
-  /* Cards */
   .card {
     min-height: auto;
-    padding: 28px 24px;
+    padding: 30px 24px;
   }
 
   .num {
-    margin-bottom: 32px;
+    margin-bottom: 36px;
   }
 
   .cardTitle {
     font-size: 20px;
   }
 
-  /* Flow */
   .flowItem {
     border-right: none;
     border-bottom: 1px solid var(--soft);
     min-height: auto;
-    padding: 22px 0;
-    font-size: 16px;
+    padding: 24px 0;
+    font-size: 17px;
   }
 
   .flowItem:last-child {
     border-bottom: none;
   }
 
-  /* Contact */
   .contactBox {
     min-height: auto;
-    padding: 24px;
+    padding: 26px;
   }
 
-  /* 호버 효과 제거 (터치에서 stuck 방지) */
   .card:hover,
   .contactBox:hover {
     transform: none;
   }
 
-  /* Footer */
   .footer {
     padding: 48px 0;
   }
