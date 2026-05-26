@@ -32,8 +32,8 @@ public class ProductService {
         return ProductResponse.from(product);
     }
 
-    public List<ProductResponse> getProductsBySection(String section) {
-        Pageable pageable = PageRequest.of(0, DEFAULT_LIMIT);
+    public List<ProductResponse> getProductsBySection(String section, int limit) {
+        Pageable pageable = PageRequest.of(0, limit);
 
         List<Product> products = switch (section.toUpperCase()) {
             case "NEW"      -> productRepository.findByActiveTrueOrderByCreatedAtDesc(pageable);

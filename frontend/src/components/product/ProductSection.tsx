@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import ProductCard from "./ProductCard";
 import { Product } from "@/types/product";
 
@@ -37,9 +38,18 @@ export default function ProductSection({
             {title}
           </h2>
         </div>
-        <button className="text-[11px] text-[#B8B4AE] tracking-[0.08em] border-b border-[#D8D4CE] pb-px hover:text-[#111] hover:border-[#111] transition-colors">
-          더보기 →
-        </button>
+        {title === "랭킹" ? (
+          <Link
+            href="/ranking"
+            className="text-[11px] text-[#B8B4AE] tracking-[0.08em] border-b border-[#D8D4CE] pb-px hover:text-[#111] hover:border-[#111] transition-colors"
+          >
+            더보기 →
+          </Link>
+        ) : (
+          <button className="text-[11px] text-[#B8B4AE] tracking-[0.08em] border-b border-[#D8D4CE] pb-px hover:text-[#111] hover:border-[#111] transition-colors">
+            더보기 →
+          </button>
+        )}
       </div>
 
       <div className="max-w-[1200px] mx-auto px-4">
@@ -49,15 +59,15 @@ export default function ProductSection({
           onMouseLeave={() => setHovered(false)}
         >
           <div
-              className="flex transition-transform duration-700 ease-in-out"
-              style={{ transform: `translateX(-${page * 20}%)` }}
-            >
-              {products.slice(0, 10).map((p) => (
-                <div key={p.id} className="flex-shrink-0 w-1/5">
-                  <ProductCard {...p} />
-                </div>
-              ))}
-            </div>
+            className="flex transition-transform duration-700 ease-in-out"
+            style={{ transform: `translateX(-${page * 20}%)` }}
+          >
+            {products.slice(0, 10).map((p) => (
+              <div key={p.id} className="flex-shrink-0 w-1/5">
+                <ProductCard {...p} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

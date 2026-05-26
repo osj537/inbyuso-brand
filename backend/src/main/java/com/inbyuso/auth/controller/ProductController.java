@@ -18,9 +18,10 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<ProductResponse>>> getProducts(
-            @RequestParam(defaultValue = "NEW") String section
+            @RequestParam(defaultValue = "NEW") String section,
+            @RequestParam(defaultValue = "10") int limit
     ) {
-        List<ProductResponse> products = productService.getProductsBySection(section);
+        List<ProductResponse> products = productService.getProductsBySection(section, limit);
         return ResponseEntity.ok(ApiResponse.success("상품 조회 성공", products));
     }
 

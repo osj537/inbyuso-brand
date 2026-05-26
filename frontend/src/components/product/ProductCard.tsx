@@ -5,6 +5,7 @@ import { Product } from "@/types/product";
 import { wishlistService } from "@/lib/wishlistService";
 import { authService } from "@/lib/authService";
 import { useWishlist } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 
 type ProductCardProps = Pick<
   Product,
@@ -17,7 +18,7 @@ type ProductCardProps = Pick<
   | "rating"
   | "imageUrl"
   | "discountRate"
->;
+> & { rank?: number };
 
 const BRAND_STYLES: Record<string, { from: string; to: string; text: string }> =
   {
@@ -64,15 +65,18 @@ export default function ProductCard({
   salePrice,
   rating = 4.8,
   discountRate,
+  rank,
 }: ProductCardProps) {
   const router = useRouter();
   const { wishedIds, toggleWish } = useWishlist();
+  const showToast = useToast();
   const wished = wishedIds.has(id);
 
   async function handleWishToggle(e: React.MouseEvent) {
     e.stopPropagation();
     if (!authService.isLoggedIn()) {
-      router.push("/login");
+      showToast("로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다.");
+      setTimeout(() => router.push("/login"), 1500);
       return;
     }
     toggleWish(id);
@@ -123,9 +127,16 @@ export default function ProductCard({
         <p className="text-[10px] text-[#B8B4AE] tracking-[0.08em] uppercase mb-1">
           {brand}
         </p>
-        <p className="text-[13px] text-[#111] leading-snug mb-2 line-clamp-2 font-light">
-          {name}
-        </p>
+        <div className="flex items-start gap-1.5 mb-2">
+          {rank !== undefined && (
+            <span className="flex-shrink-0 inline-flex items-center justify-center w-5 h-5 bg-[#1F3D2A] text-white text-[10px] font-bold mt-px">
+              {rank}
+            </span>
+          )}
+          <p className="text-[13px] text-[#111] leading-snug line-clamp-2 font-light">
+            {name}
+          </p>
+        </div>
         <div className="flex items-center gap-1.5">
           {salePrice ? (
             <>

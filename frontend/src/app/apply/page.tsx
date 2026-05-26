@@ -1,4 +1,5 @@
 import Footer from "@/components/layout/Footer";
+import ApplyHeader from "@/components/layout/ApplyHeader";
 import ApplyHero from "@/components/apply/ApplyHero";
 import WhySection from "@/components/apply/WhySection";
 import DataDashboard from "@/components/apply/DataDashboard";
@@ -10,7 +11,8 @@ import ApplyCTA from "@/components/apply/ApplyCTA";
 export default function ApplyPage() {
   return (
     <div className="min-h-screen bg-[#F8F6F2]">
-      <main className="pt-16">
+      <ApplyHeader />
+      <main>
         <ApplyHero />
         <WhySection />
         <DataDashboard />

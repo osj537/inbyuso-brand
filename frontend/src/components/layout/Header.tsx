@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { authService } from "@/lib/authService";
 import { useLogout } from "@/context/AuthContext";
+import { useToast } from "@/context/ToastContext";
 import { CATEGORIES } from "@/lib/categoryData";
 import SearchOverlay from "./SearchOverlay";
 import styles from "./Header.module.css";
@@ -19,6 +20,7 @@ export default function Header() {
   const [isBrandOwner, setIsBrandOwner] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const router = useRouter();
+  const showToastMessage = useToast();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -59,7 +61,15 @@ export default function Header() {
             <button onClick={() => router.push('/brand')} className={styles.rightMenuItem}>브랜드 대시보드</button>
           )}
           <button className={styles.rightMenuItem}>홈</button>
-          <button className={styles.rightMenuItem}>장바구니</button>
+          <button
+            className={styles.rightMenuItem}
+            onClick={() => {
+              if (!isLoggedIn) {
+                showToastMessage("로그인이 필요한 기능입니다. 로그인 페이지로 이동합니다.");
+                setTimeout(() => router.push("/login"), 1500);
+              }
+            }}
+          >장바구니</button>
           {isLoggedIn ? (
             <button onClick={handleLogout} className={styles.rightMenuItem}>로그아웃</button>
           ) : (

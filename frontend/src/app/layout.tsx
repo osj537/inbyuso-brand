@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastProvider } from "@/context/ToastContext";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
@@ -20,7 +21,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col" style={{ fontFamily: "'Pretendard', -apple-system, sans-serif" }}>
         <NextTopLoader color="#1F3D2A" showSpinner={false} height={2} />
-        <AuthProvider>{children}</AuthProvider>
+        <ToastProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ToastProvider>
       </body>
     </html>
   );
